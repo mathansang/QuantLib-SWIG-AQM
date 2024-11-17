@@ -25,8 +25,8 @@ from setuptools._distutils.ccompiler import get_default_compiler
 def define_macros(py_limited_api):
 
     define_macros = []
-    if py_limited_api:
-        define_macros += [("Py_LIMITED_API", "0x03080000")]
+    # if py_limited_api:
+    #     define_macros += [("Py_LIMITED_API", "0x03080000")]
 
     compiler = get_default_compiler()
 
@@ -58,8 +58,10 @@ def include_dirs():
 
     if compiler == "msvc":
         try:
-            QL_INSTALL_DIR = os.environ["QL_DIR"]
-            include_dirs += [QL_INSTALL_DIR]
+            # QL_INSTALL_DIR = os.environ["QL_DIR"]
+            QL_INSTALL_DIR = 'D:/Project/seo/QuantLib'
+            BOOST_INSTALL_DIR = 'D:/local/boost_1_80_0'
+            include_dirs += [QL_INSTALL_DIR, BOOST_INSTALL_DIR]
         except KeyError:
             print("warning: unable to detect QuantLib installation")
 
@@ -84,7 +86,8 @@ def library_dirs():
 
     if compiler == "msvc":
         try:
-            QL_INSTALL_DIR = os.environ["QL_DIR"]
+            # QL_INSTALL_DIR = os.environ["QL_DIR"]
+            QL_INSTALL_DIR = 'D:/Project/seo/QuantLib'
             library_dirs += [os.path.join(QL_INSTALL_DIR, "lib")]
         except KeyError:
             print("warning: unable to detect QuantLib installation")
@@ -122,7 +125,8 @@ def extra_compile_args():
     compiler = get_default_compiler()
 
     if compiler == "msvc":
-        extra_compile_args = ["/GR", "/FD", "/Zm250", "/EHsc", "/bigobj", "/std:c++17"]
+        # extra_compile_args = ["/GR", "/FD", "/Zm250", "/EHsc", "/bigobj", "/std:c++17"]
+        extra_compile_args = ["/GR", "/FD", "/Zm250", "/EHsc", "/bigobj", "/std:c++17", '/wd4819','/wd4101', '/wd4996', '/wd4018' ]
 
         if "QL_STATIC_RUNTIME" in os.environ:
             extra_compile_args.append("/MT")
