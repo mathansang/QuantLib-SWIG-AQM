@@ -194,3 +194,5 @@ QL_DEPRECATED_DISABLE_WARNING
 %include volatilitymodels.i
 %include zerocurve.i
 %include old_volatility.i
+
+%include aqm/aqm.i

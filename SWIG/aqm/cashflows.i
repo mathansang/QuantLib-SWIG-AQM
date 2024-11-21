@@ -1,5 +1,5 @@
-#ifndef aqlib_cashflows_i
-#define aqlib_cashflows_i
+#ifndef aqm_cashflows_i
+#define aqm_cashflows_i
 
 
 %include ../cashflows.i
@@ -7,8 +7,6 @@
 
 
 // extend
-
-
 
 %{
 using QuantLib::CmtCoupon;

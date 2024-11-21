@@ -1,9 +1,7 @@
-#ifndef aqlib_indexes_i
-#define aqlib_indexes_i
-
+#ifndef aqm_indexes_i
+#define aqm_indexes_i
 
 %include ../indexes.i
-
 
 // extend
 
@@ -23,26 +21,12 @@ class BondIndex : public InterestRateIndex {
               const Period& fixedLegTenor,
               BusinessDayConvention fixedLegConvention,
               const DayCounter& fixedLegDayCounter,
-              Real couponRate);
-    BondIndex(const std::string& familyName,
-              const Period& tenor,
-              Integer settlementDays,
-              const Currency& currency,
-              const Calendar& calendar,
-              const Period& fixedLegTenor,
-              BusinessDayConvention fixedLegConvention,
-              const DayCounter& fixedLegDayCounter,
-              Real couponRate,
               const Handle<YieldTermStructure>& discountCurve);
     Period fixedLegTenor() const;
     BusinessDayConvention fixedLegConvention() const;
-    Real Real couponRate() const;
     // ext::shared_ptr<IborIndex> iborIndex() const;
-    Handle<YieldTermStructure> forwardingTermStructure() const;
     Handle<YieldTermStructure> discountingTermStructure() const;
-    ext::shared_ptr<BondIndex> clone(const Handle<YieldTermStructure>& h) const;
-    ext::shared_ptr<BondIndex> clone(const Handle<YieldTermStructure>& forwarding,
-                                       const Handle<YieldTermStructure>& discounting) const;
+    ext::shared_ptr<BondIndex> clone(const Handle<YieldTermStructure>& discounting) const;
     ext::shared_ptr<BondIndex> clone(const Period& tenor) const;
 };
 
@@ -54,7 +38,7 @@ namespace std {
         vector<ext::shared_ptr<BondIndex> >;
 }
 
-%define export_swap_instance(Name)
+%define export_bond_instance(Name)
 %{
 using QuantLib::Name;
 %}
@@ -62,30 +46,23 @@ using QuantLib::Name;
 class Name : public BondIndex {
   public:
     Name(const Period &tenor,
-         const Handle<YieldTermStructure>& h =
-                                    Handle<YieldTermStructure>());
-    Name(const Period &tenor,
-         const Handle<YieldTermStructure>& h1,
-         const Handle<YieldTermStructure>& h2);
+         const Handle<YieldTermStructure>& h = Handle<YieldTermStructure>());
 };
 %enddef
 
-%define export_quoted_swap_instance(Name,Base)
+%define export_quoted_bond_instance(Name,Base)
 %{
 using QuantLib::Name;
 %}
 %shared_ptr(Name)
 class Name : public Base {
   public:
-    Name(const Handle<YieldTermStructure>& h =
-                                    Handle<YieldTermStructure>());
-    Name(const Handle<YieldTermStructure>& h1,
-         const Handle<YieldTermStructure>& h2);
+    Name(const Handle<YieldTermStructure>& h = Handle<YieldTermStructure>());
 };
 %enddef
 
 %inline %{
-    ext::shared_ptr<BondIndex> as_swap_index(
+    ext::shared_ptr<BondIndex> as_bond_index(
                           const ext::shared_ptr<InterestRateIndex>& index) {
         return ext::dynamic_pointer_cast<BondIndex>(index);
     }
